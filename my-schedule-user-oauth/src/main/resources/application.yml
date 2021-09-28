@@ -1,0 +1,53 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: user-auth
+  redis:
+    host: 150.158.213.196
+    port: 6379
+    password: mypassword
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/schedule_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+auth:
+  ttl: 3600  #token存储到redis的过期时间
+  clientId: zhongy
+  clientSecret: zhongy
+  cookieDomain: localhost
+  cookieMaxAge: -1
+encrypt:
+  key-store:
+    location: classpath:/zhongy.jks
+    secret: zhongy
+    alias: zhongy
+    password: zhongy
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 10000
+
+#头像地址
+head:
+  url: https://img.yzcdn.cn/vant/cat.jpeg
+
+#qq第三方
+qq:
+  http: https://www.xiaokk.top
+  appId: 101956195
+  appKey: 06af0883caa89e3ff0ae15903b7f7fea
+  redirect_URI: https://www.xiaokk.top/#/logining

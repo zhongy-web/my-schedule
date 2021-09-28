@@ -1,0 +1,74 @@
+spring:
+  application: # 服务名称
+    name: gateway-web
+#  redis:
+#    host: 150.158.213.196
+#    password: mypassword
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 20000
+        response-timeout: 20s
+      routes:
+        - id: schedule_user_route
+          uri: lb://user
+          predicates:
+            - Path=/user/**, /box/**, /role/**
+        - id: schedule_week_route
+          uri: lb://schedule
+          predicates:
+            - Path=/week/**, /daily/**, /dailyDetail/**, /analysis/**
+        - id: schedule_file_route
+          uri: lb://file
+          predicates:
+            - Path=/upload/**
+        - id: schedule_community_route
+          uri: lb://community
+          predicates:
+            - Path=/article/**, /comment/**
+        - id: schedule_oauth_route
+          uri: lb://user-auth
+          predicates:
+            - Path=/oauth/**
+#          filters:
+#            # 将请求路径中的第一个路径去掉，请求路径以/区分
+##            - StripPrefix=1
+#            # 用户请求/**->/brand/**,并且将该请求路由到http://localhost:18081微服务
+#            #          - PrefixPath=/brand
+#            # 局部限流过滤器
+#            - name: RequestRateLimiter # 请求数限流  名字不能随便写，使用默认的facatory
+#              args:
+#                # 用户身份唯一识别标识符
+#                key-resolver: "#{@ipKeyResolver}"
+#                # 每秒只允许有一个请求
+#                redis-rate-limiter.replenishRate: 500
+#                # 允许并发有1个请求【宽限的个数】
+#                redis-rate-limiter.burstCapacity: 1000
+
+server:
+  port: 8001
+  ssl:
+    key-store: classpath:www.xiaokk.top.jks
+    key-password: 59554v832z70s3f
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true
+filter:
+  allowPaths:
+    - /oauth/login
+    - /oauth/loginByQQ
+    - /oauth/loginAfter
+    - /user/verify
+    - /user/idCode
+    - /user/register
+    - /upload
